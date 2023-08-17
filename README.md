@@ -1,5 +1,5 @@
-# discordapplicationbot
-Discord Application Bot
+# Discord Application Bot
+Discord bot to handle user applications for whitelisted servers.
 
 # How to run
 - clone
