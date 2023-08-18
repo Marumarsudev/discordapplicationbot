@@ -37,7 +37,7 @@ namespace KirnuApplicationBot
             foreach (var kp in ApplicationHandler.Applications)
             {
                 option
-                    .AddChoice(kp.Value.applicationname, kp.Value.id);
+                    .AddChoice(kp.Value.applicationname, kp.Key);
             }
 
             var guildCommand = new SlashCommandBuilder()
@@ -57,44 +57,78 @@ namespace KirnuApplicationBot
 
         private async Task CommandHandler(SocketSlashCommand command)
         {
-            // Console.WriteLine(command.Data.Options.First().Value);
+
             if (command.Data.Name != Localizations.Localize("appstartname"))
             {
                 return;
             }
 
             var applicationId = command.Data.Options.First().Value.ToString();
-            
-            if (!Directory.Exists("./applications"))
-            {
-                Directory.CreateDirectory("./applications");
-            }
 
-            if (!File.Exists($"./applications/{command.User.Id}_{applicationId}.json"))
+            var hasRequiredRole = _client.GetGuild(Program.AppConfig.guildid).GetUser(command.User.Id).Roles.Any(role =>
             {
-                File.WriteAllText($"./applications/{command.User.Id}_{applicationId}.json", "{}");
+                if (ApplicationHandler.Applications[applicationId].requiredroles.Length == 0)
+                {
+                    return true;
+                }
+                return ApplicationHandler.Applications[applicationId].requiredroles.Contains(role.Name);
+            });
+
+            var hasBlacklistedRole = _client.GetGuild(Program.AppConfig.guildid).GetUser(command.User.Id).Roles.Any(role =>
+            {
+                return ApplicationHandler.Applications[applicationId].blacklistedroles.Contains(role.Name);
+            });
+
+            var hasWhitelistedRole = _client.GetGuild(Program.AppConfig.guildid).GetUser(command.User.Id).Roles.Any(role =>
+            {
+                return ApplicationHandler.Applications[applicationId].whitelistedroles.Contains(role.Name);
+            });
+
+            if (!hasWhitelistedRole)
+            {
+                if (hasBlacklistedRole)
+                {
+                    await command.RespondAsync(Localizations.Localize("hasblacklistedrole"));
+                    return;
+                }
+
+                if (!hasRequiredRole)
+                {
+                    string roles = "";
+                    ApplicationHandler.Applications[applicationId].requiredroles.ToList().ForEach(role =>
+                    {
+                        roles += $"{role} ";
+                    });
+                    await command.RespondAsync($"{Localizations.Localize("missingroles")} {roles}");
+                    return;
+                }
             }
 
             await command.RespondAsync(Localizations.Localize("appstartresponse"));
 
-            if (ApplicationHandler.OnGoingApplications.ContainsKey(command.User.Id))
+            var dmchannel= await command.User.CreateDMChannelAsync();
+            var msgs = dmchannel.GetMessagesAsync(100, CacheMode.AllowDownload);
+            msgs.ForEachAsync(msg =>
             {
-                
-            }
-            
+                foreach (IMessage message in msg)
+                {
+                    message.DeleteAsync();
+                }
+            });
+
             var startData = new CustomIDJson(applicationId, "start");
             var cancelData = new CustomIDJson(applicationId, "cancel");
             var embed = new EmbedBuilder()
                 .WithTitle(ApplicationHandler.Applications[applicationId].applicationname)
                 .WithColor(Color.Teal)
-                .AddField(Localizations.Localize("startappmsg"), "wip");
+                .AddField(Localizations.Localize("startappmsg"), ":rock:");
 
             var componentBuilder = new ComponentBuilder()
                 .WithButton(Localizations.Localize($"startappbtn"), JsonConvert.SerializeObject(startData),
                     ButtonStyle.Primary)
                 .WithButton(Localizations.Localize($"cancelappbtn"), JsonConvert.SerializeObject(cancelData),
                     ButtonStyle.Danger);
-            await command.User.SendMessageAsync(components: componentBuilder.Build(), embed: embed.Build());
+            var msg= await command.User.SendMessageAsync(components: componentBuilder.Build(), embed: embed.Build());
         }
     }
 }

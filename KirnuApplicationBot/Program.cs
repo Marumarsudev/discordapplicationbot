@@ -19,7 +19,6 @@ namespace KirnuApplicationBot
 
         public async Task MainAsync(string[] args)
         {
-            RecreateCommands = args.Contains("--recreatecommands");
             Localizations.LoadLocalizations();
 
 
@@ -27,6 +26,8 @@ namespace KirnuApplicationBot
             {
                 AppConfig = JsonConvert.DeserializeObject<AppConfig>(r.ReadToEnd());
             }
+
+            RecreateCommands = AppConfig.recreatecommands;
 
             _client = new DiscordSocketClient();
             _client.Log += Log;

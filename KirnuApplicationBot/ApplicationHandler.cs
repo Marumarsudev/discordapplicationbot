@@ -16,9 +16,11 @@ namespace KirnuApplicationBot
     
     public class Application
     {
-        public string id;
         public string applicationname;
         public ApplicationQuestion[] questions;
+        public string[] whitelistedroles;
+        public string[] requiredroles;
+        public string[] blacklistedroles;
     }
 
     public class OnGoingApplication
@@ -69,8 +71,24 @@ namespace KirnuApplicationBot
                 return;
             }
 
-            OnGoingApplications.TryAdd(component.User.Id, new OnGoingApplication(customIdJson.id, Applications[customIdJson.id].questions.Length));
-            var currentApplication = OnGoingApplications[component.User.Id];
+            if (customIdJson.action == "start")
+            {
+                try
+                {
+                    OnGoingApplications.Remove(component.User.Id);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
+                OnGoingApplications.TryAdd(component.User.Id, new OnGoingApplication(customIdJson.id, Applications[customIdJson.id].questions.Length));
+            }
+            OnGoingApplication currentApplication = null;
+
+            if (customIdJson.action != "cancel")
+            {
+                currentApplication = OnGoingApplications[component.User.Id];
+            }
 
             switch (customIdJson.action)
             {
@@ -94,10 +112,20 @@ namespace KirnuApplicationBot
                     return;
                 case "send":
                     await component.Message.DeleteAsync();
-                    await component.RespondAsync("Kiitos hakemuksesta, ylläpito tarkastaa hakemuksen tuota pikaa! :smile:");
+                    await component.RespondAsync(Localizations.Localize("applicationsentresponse"));
                     await SendApplication(component, currentApplication, customIdJson);
                     return;
                 case "cancel":
+                    try
+                    {
+                        OnGoingApplications.Remove(component.User.Id);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                    }
+                    await component.Message.DeleteAsync();
+                    await component.RespondAsync(Localizations.Localize("applicationcancelled"));
                     return;
                 case "start":
                     await component.Message.DeleteAsync();
@@ -113,7 +141,7 @@ namespace KirnuApplicationBot
                     await component.RespondWithModalAsync(modal.Build());
                     return;
                 default:
-                    break;
+                    return;
             }
         }
 
@@ -129,7 +157,11 @@ namespace KirnuApplicationBot
             }
 
             currentApplication.answers[currentApplication.currentQuestionId] = modal.Data.Components.First().Value;
-
+            currentApplication.currentQuestionId += 1;
+            currentApplication.currentQuestionId =
+                currentApplication.currentQuestionId >= Applications[currentApplication.applicationId].questions.Length
+                    ? Applications[currentApplication.applicationId].questions.Length - 1
+                    : currentApplication.currentQuestionId;
             await SendUpdatedEmbedMessage(modal, currentApplication, customIdJson);
         }
 
@@ -141,9 +173,10 @@ namespace KirnuApplicationBot
             {
                 componentBuilder.WithButton(Localizations.Localize($"previous"),
                     JsonConvert.SerializeObject(new CustomIDJson(customIdJson.id, "previous")),
-                    ButtonStyle.Secondary); //, disabled: string.IsNullOrEmpty(currentApplication.answers[currentApplication.currentQuestionId])
+                    ButtonStyle.Secondary);
             }
-            if (currentApplication.currentQuestionId < Applications[currentApplication.applicationId].questions.Length - 1)
+            if (currentApplication.currentQuestionId < Applications[currentApplication.applicationId].questions.Length - 1 &&
+                !string.IsNullOrWhiteSpace(currentApplication.answers[currentApplication.currentQuestionId]))
             {
                 componentBuilder.WithButton(Localizations.Localize($"next"),
                     JsonConvert.SerializeObject(new CustomIDJson(customIdJson.id, "next")),
@@ -155,11 +188,17 @@ namespace KirnuApplicationBot
             componentBuilder.WithButton(Localizations.Localize($"cancel"),
                 JsonConvert.SerializeObject(new CustomIDJson(customIdJson.id, "cancel")),
                 ButtonStyle.Danger);
-            componentBuilder.WithButton(Localizations.Localize($"send"),
-                JsonConvert.SerializeObject(new CustomIDJson(customIdJson.id, "send")),
-                ButtonStyle.Success); //, disabled: currentApplication.answers.Count == Applications[currentApplication.applicationId].questions.Length
 
-            string answer = "*Vastaus*";
+            if (currentApplication.currentQuestionId ==
+                Applications[currentApplication.applicationId].questions.Length - 1 &&
+                !string.IsNullOrWhiteSpace(currentApplication.answers[currentApplication.currentQuestionId]))
+            {
+                componentBuilder.WithButton(Localizations.Localize($"send"),
+                    JsonConvert.SerializeObject(new CustomIDJson(customIdJson.id, "send")),
+                    ButtonStyle.Success);
+            }
+
+            string answer = "*-*";
             if (currentApplication.answers[currentApplication.currentQuestionId] != null)
             {
                 answer = currentApplication.answers[currentApplication.currentQuestionId];
@@ -178,12 +217,16 @@ namespace KirnuApplicationBot
             var channel =
                 _client.GetGuild(Program.AppConfig.guildid).GetChannel(Program.AppConfig.appchannelid) as ITextChannel;
 
-            var thread = await channel.CreateThreadAsync($"{Localizations.Localize("users")} {interaction.User.Username}",
+            var thread = await channel.CreateThreadAsync($"{Localizations.Localize("users")} {interaction.User.Username} {Applications[currentApplication.applicationId].applicationname}",
                 ThreadType.PublicThread, ThreadArchiveDuration.ThreeDays);
             
             for (var i = 0; i < Applications[currentApplication.applicationId].questions.Length; i++)
             {
-                await thread.SendMessageAsync($"{Applications[currentApplication.applicationId].questions[i].question}\n{OnGoingApplications[interaction.User.Id].answers[i]}");
+                var embed = new EmbedBuilder()
+                    .WithColor(Color.Teal)
+                    .AddField($"{Applications[currentApplication.applicationId].questions[i].question}",
+                        $"{OnGoingApplications[interaction.User.Id].answers[i]}");
+                await thread.SendMessageAsync(embed: embed.Build());
             }
         }
     }

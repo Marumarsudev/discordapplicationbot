@@ -1,8 +1,10 @@
 ﻿{
   "discord":
     {
-      "id": "discord",
       "applicationname": "Discord Hakemus",
+      "whitelistedroles": ["Bottitestaaja"],
+      "requiredroles": [],
+      "blacklistedroles": ["Jäsen"],
       "questions": [
         { "question": "Oliko säännöissä jotain mikä jäi mietityttämään, tai puuttuuko sieltä mielestäsi jotain?" },
         { "question": "Kuinka kuulit tästä serveristä? Jos toisen henkilön kautta, niin kenen?" },
@@ -17,8 +19,10 @@
     },
     "minecraft":
     {
-      "id": "minecraft",
       "applicationname": "Minecraft Hakemus",
+      "whitelistedroles": ["Bottitestaaja"],
+      "requiredroles": ["Jäsen"],
+      "blacklistedroles": ["Minecraft"],
       "questions": [
         { "question": "Mikä on Minecraft käyttäjänimesi?" },
         { "question": "Mitä tykkäät eniten tehdä Minecraftissa?" },
@@ -30,5 +34,4 @@
         { "question": "Kiinnostaisiko sinua osallistua yhteisöllisiin rakennusprojekteihin, kuten vaikkapa spawnin tai muun vastaavan rakentamiseen?" }
       ]
     }
-
 }

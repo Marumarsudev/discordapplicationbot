@@ -14,5 +14,10 @@
   "send": "Lähetä",
   "cancel": "Peruuta",
   "answer": "Vastaus",
-  "users": "Käyttäjän"
+  "users": "Käyttäjän",
+  "hasblacklistedrole": "Hupsu, sinullahan on jo rooli!",
+  "missingroles": "Sinulta näyttäisi puuttuvan seuraavat roolit: ",
+  "applicationcancelled": "Hakemus keskeytetty :frowning2:",
+  "applicatioin": "hakemus",
+  "applicationsentresponse": "Kiitos hakemuksesta, ylläpito tarkastaa hakemuksen tuota pikaa! :smile:"
 }
