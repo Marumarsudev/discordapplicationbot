@@ -15,14 +15,14 @@ namespace KirnuApplicationBot
         public static bool RecreateCommands;
         
         private DiscordSocketClient _client;
-        private TestCommand _testCommand;
-        private SayMyName _sayMyName;
         public static Task Main(string[] args) => new Program().MainAsync(args);
 
         public async Task MainAsync(string[] args)
         {
             RecreateCommands = args.Contains("--recreatecommands");
-            #region bot_startup
+            Localizations.LoadLocalizations();
+
+
             using (StreamReader r = new StreamReader("./config.json"))
             {
                 AppConfig = JsonConvert.DeserializeObject<AppConfig>(r.ReadToEnd());
@@ -33,9 +33,8 @@ namespace KirnuApplicationBot
 
             await _client.LoginAsync(TokenType.Bot, AppConfig.token);
             await _client.StartAsync();
-            #endregion
-        
-            #region commands
+
+            var applicationHandler = new ApplicationHandler(_client);
 
             if (Program.RecreateCommands)
             {
@@ -46,10 +45,9 @@ namespace KirnuApplicationBot
                     await guild.BulkOverwriteApplicationCommandAsync(applicationCommandProperties.ToArray());
                 };
             }
-            
-            _testCommand = new TestCommand(_client);
-            _sayMyName = new SayMyName(_client);
-            #endregion
+
+            var appStartCommand = new CommandStartApplication(_client);
+
             await Task.Delay(-1);
         }
 

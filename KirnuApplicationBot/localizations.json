@@ -1,0 +1,18 @@
+﻿{
+  "appstartresponse": "Hei, vastaa kysymyksiin yksityisviesteissä!",
+  "appstartdesc": "Aloittaa valitun hakemuksen.",
+  "appstartname": "hae",
+  "applicationtype": "hakemus",
+  "applicationdesc": "Valitse hakemus, jonka haluat täyttää.",
+  "startappbtn": "Aloita",
+  "cancelappbtn": "Peruuta",
+  "startappmsg": "Hei, paina tästä aloittaaksesi hakemuksen",
+  "answerquestionbtn": "Vastaa",
+  "question": "Kysymys",
+  "previous": "Edellinen",
+  "next": "Seuraava",
+  "send": "Lähetä",
+  "cancel": "Peruuta",
+  "answer": "Vastaus",
+  "users": "Käyttäjän"
+}

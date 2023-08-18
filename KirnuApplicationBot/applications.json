@@ -1,0 +1,34 @@
+﻿{
+  "discord":
+    {
+      "id": "discord",
+      "applicationname": "Discord Hakemus",
+      "questions": [
+        { "question": "Oliko säännöissä jotain mikä jäi mietityttämään, tai puuttuuko sieltä mielestäsi jotain?" },
+        { "question": "Kuinka kuulit tästä serveristä? Jos toisen henkilön kautta, niin kenen?" },
+        { "question": "Minkä ikäinen olet?" },
+        { "question": "Mitkä ovat lempipelejäsi?" },
+        { "question": "Mitä odotat tältä yhteisöltä?" },
+        { "question": "Kuinka aikuisena pidät itseäsi, ja miksi?" },
+        { "question": "Millaisena ihmisenä muut kuvailisivat sinua?" },
+        { "question": "Kerro paras puujalkavitsi jonka tiedät?" },
+        { "question": "Onko sinulla muuta lisättävää, tai haluaisitko kertoa jotain itsestäsi? Meitä kiinnostaisi kyllä kuulla!" }
+      ]
+    },
+    "minecraft":
+    {
+      "id": "minecraft",
+      "applicationname": "Minecraft Hakemus",
+      "questions": [
+        { "question": "Mikä on Minecraft käyttäjänimesi?" },
+        { "question": "Mitä tykkäät eniten tehdä Minecraftissa?" },
+        { "question": "Kuinka aktiivinen olet? Vastaus ei vaikuta valintaan, haluaisimme vain tietää!" },
+        { "question": "Oletko pelannut ennen samankaltaisilla servereillä? Jos olet, pelaatko mieluummin muiden " },
+        { "question": "Mitä mieltä olet Minecraftissa huijaamisesta esim. modattua clienttiä käyttämällä?" },
+        { "question": "Oletko huijannut pelissä esim. käyttämällä x-ray:tä, modattua clienttiä tai muuta vastaavaa?" },
+        { "question": "Mitä odotat tältä serveriltä?" },
+        { "question": "Kiinnostaisiko sinua osallistua yhteisöllisiin rakennusprojekteihin, kuten vaikkapa spawnin tai muun vastaavan rakentamiseen?" }
+      ]
+    }
+
+}
