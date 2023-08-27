@@ -19,5 +19,20 @@
   "missingroles": "Sinulta näyttäisi puuttuvan seuraavat roolit: ",
   "applicationcancelled": "Hakemus keskeytetty :frowning2:",
   "applicatioin": "hakemus",
-  "applicationsentresponse": "Kiitos hakemuksesta, ylläpito tarkastaa hakemuksen tuota pikaa! :smile:"
+  "applicationsentresponse": "Kiitos hakemuksesta, ylläpito tarkastaa hakemuksen tuota pikaa! :smile:",
+  "staffhandleappname": "hakemus",
+  "staffhandleappdesc": "Hyväksy tai hylkää käyttäjien hakemuksia.",
+  "staffhandleappverdict": "valinta",
+  "approve": "hyväksy",
+  "deny": "hylkää",
+  "user": "käyttäjä",
+  "userdesc": "Käyttäjä, jonka hakemusta haluat käsitellä.",
+  "role": "rooli",
+  "roledesc": "Hyväksytylle käyttäjälle annettava rooli.",
+  "applicationapproved": "Hakemus hyväksytty!",
+  "applicationdenied": "Hakemus hylätty!",
+  "applicationapprovedmsg": "Hei! Hakemuksesi Hiidenkirnulle on hyväksytty tervetuloa mukaan!",
+  "applicationdeniedmsg": "Hei, valitettavasti hakemuksenne ei miellyttänyt tarpeeksi montaa ylläpidon jäsentä.",
+  "adminrolename": "Ylläpito",
+  "apphandlenopermission": "Mitäs kehmettiä sinä yrität tehdä? >:("
 }

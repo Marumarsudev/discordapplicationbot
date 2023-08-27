@@ -48,6 +48,7 @@ namespace KirnuApplicationBot
             }
 
             var appStartCommand = new CommandStartApplication(_client);
+            var staffHandleApplications = new CommandStaffHandleApplication(_client);
 
             await Task.Delay(-1);
         }

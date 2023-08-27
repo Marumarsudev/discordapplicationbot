@@ -106,16 +106,6 @@ namespace KirnuApplicationBot
 
             await command.RespondAsync(Localizations.Localize("appstartresponse"));
 
-            // var dmchannel= await command.User.CreateDMChannelAsync();
-            // var msgs = dmchannel.GetMessagesAsync(100, CacheMode.AllowDownload);
-            // msgs.ForEachAsync(msg =>
-            // {
-            //     foreach (IMessage message in msg)
-            //     {
-            //         message.DeleteAsync();
-            //     }
-            // });
-
             var startData = new CustomIDJson(applicationId, "start");
             var cancelData = new CustomIDJson(applicationId, "cancel");
             var embed = new EmbedBuilder()
