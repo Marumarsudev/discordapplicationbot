@@ -27,7 +27,7 @@
         { "question": "Mikä on Minecraft käyttäjänimesi?" },
         { "question": "Mitä tykkäät eniten tehdä Minecraftissa?" },
         { "question": "Kuinka aktiivinen olet? Vastaus ei vaikuta valintaan, haluaisimme vain tietää!" },
-        { "question": "Oletko pelannut ennen samankaltaisilla servereillä? Jos olet, pelaatko mieluummin muiden " },
+        { "question": "Oletko pelannut ennen samankaltaisilla servereillä? Jos olet, pelaatko mieluummin muiden kanssa vai yksikseen?" },
         { "question": "Mitä mieltä olet Minecraftissa huijaamisesta esim. modattua clienttiä käyttämällä?" },
         { "question": "Oletko huijannut pelissä esim. käyttämällä x-ray:tä, modattua clienttiä tai muuta vastaavaa?" },
         { "question": "Mitä odotat tältä serveriltä?" },
