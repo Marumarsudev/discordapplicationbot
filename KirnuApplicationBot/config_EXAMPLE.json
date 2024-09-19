@@ -2,5 +2,6 @@
   "token": "",
   "guildid": 123456789010111213,
   "appchannelid": 123456789010111213,
+  "mentionroleid": 123456789010111213,
   "recreatecommands": true
 }

@@ -219,6 +219,8 @@ namespace KirnuApplicationBot
 
             var thread = await channel.CreateThreadAsync($"{Localizations.Localize("users")} {interaction.User.Username} {Applications[currentApplication.applicationId].applicationname}",
                 ThreadType.PublicThread, ThreadArchiveDuration.ThreeDays);
+
+            var roleToMention = _client.GetGuild(Program.AppConfig.guildid).GetRole(Program.AppConfig.mentionroleid);
             
             for (var i = 0; i < Applications[currentApplication.applicationId].questions.Length; i++)
             {
@@ -228,6 +230,9 @@ namespace KirnuApplicationBot
                         $"{OnGoingApplications[interaction.User.Id].answers[i]}");
                 await thread.SendMessageAsync(embed: embed.Build());
             }
+
+            if (roleToMention != null)
+                await thread.SendMessageAsync(roleToMention.Mention);
         }
     }
 }
